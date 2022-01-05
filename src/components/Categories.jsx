@@ -7,25 +7,22 @@ function Categories({ items, onClickItem }) {
     setActiveItem(index);
   };
 
-
   return (
     <div>
       <div className="categories">
         <ul>
-          <li
-            className={activeItem === null ? 'active' : ''}
-            onClick={() => onSelectItem(null)}>
+          <li className={activeItem === null ? 'active' : ''} onClick={() => onSelectItem(null)}>
             Все
           </li>
-          {items && 
+          {items &&
             items.map((name, index) => (
-            <li
-              className={activeItem === index ? 'active' : ''}
-              onClick={() => onSelectItem(index)}
-              key={`${name}_${index}`}>
-              {name}
-            </li>
-          ))}
+              <li
+                className={activeItem === index ? 'active' : ''}
+                onClick={() => onSelectItem(index)}
+                key={`${name}_${index}`}>
+                {name}
+              </li>
+            ))}
         </ul>
       </div>
     </div>
