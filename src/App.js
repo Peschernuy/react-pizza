@@ -1,62 +1,41 @@
 import React from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
+import {  useDispatch } from 'react-redux';
 
 import { Header} from './components';
 import {Home, Cart} from './pages';
 import { Route, Routes } from 'react-router-dom';
-import { setPizzas as setPizzasAction } from './redux/actions/pizzas'
+import { setPizzas } from './redux/actions/pizzas';
+
+import { setCategory } from './redux/actions/filters';
+
+console.log(setCategory);
 
 
+function App () {
 
-// function App() {
-//   React.useEffect(() => {
-//     axios.get('http://localhost:3000/db.json')
-//     .then(({ data }) => {
-//       setPizzas(data.pizzas)
-//     });
-//   }, []);
-
+  const dispatch = useDispatch();
   
+  React.useEffect(() => {
+      axios.get('http://localhost:3001/pizzas').then(({ data }) => {
+        dispatch(setPizzas(data));
+      });
+  }, []);
 
- 
-// }
 
-class App extends React.Component {
+return (
+  <div className="wrapper">
+    <Header />
+    <div className="content">
+      <Routes>
+        <Route path="/" element={<Home />} exact />
+        <Route path="/cart" element={<Cart />} exact />
+      </Routes>
+    </div>
+  </div>
+);
 
-  componentDidMount() {
-     axios.get('http://localhost:3000/db.json')
-    .then(({ data }) => {
-      this.props.setPizzas(data.pizzas);
-    });
-  }
-
-  render() {
-    return (
-      <div className="wrapper">
-        <Header />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Home items={this.props.items} />} exact />
-            <Route path="/cart" element={<Cart />} exact />
-          </Routes>
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    items: state.pizzas.items,
-    filters: state.filters
-  }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setPizzas: (items) => dispatch(setPizzasAction(items))
-  }
-}
+export default App;
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
